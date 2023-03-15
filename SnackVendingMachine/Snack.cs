@@ -8,9 +8,9 @@ namespace SnackVendingMachine
     {
         private string name;
         private double price;
-        private float quantity;
+        private int quantity;
 
-        public Snack(string name, double price, float quantity)
+        public Snack(string name, double price, int quantity)
         {
             this.name = name;
             this.price = price;
@@ -37,12 +37,12 @@ namespace SnackVendingMachine
             return this.price;
         }
 
-        public void SetQuantity(float quantity) 
+        public void SetQuantity(int quantity) 
         {
             this.quantity = quantity;
         }
 
-        public float GetQuantity ()
+        public int GetQuantity ()
         {
             return this.quantity;
         }

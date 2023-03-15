@@ -6,8 +6,11 @@ namespace SnackVendingMachine.Users
 {
     internal abstract class User
     {
-        public User() { }
+        public User() 
+        {
 
-        public abstract void DisplayMenu(VendingMachine VMObj);
+        }
+
+        public abstract void DisplayMenu();
     }
 }

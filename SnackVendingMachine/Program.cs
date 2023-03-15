@@ -7,14 +7,17 @@ namespace SnackVendingMachine
     {
         static void Main(string[] args)
         {
-            User customer = new Customer();
-            customer.DisplayMenu(new VendingMachine());
+            VendingMachine vendingMachine= new VendingMachine();
+
+            User customer = new Customer(vendingMachine);
+            customer.DisplayMenu();
 
             int option = Convert.ToInt32(Console.ReadLine());
 
             switch(option)
             {
                 case 1:
+                    (new Customer(vendingMachine)).MakePurchase(option);
                     break;
                 case 2:
                     break;
@@ -34,7 +37,7 @@ namespace SnackVendingMachine
 
                     if (pin == "1011" && pass == "A5144I")
                     {
-                        User adminUser = new Admin();
+                        User adminUser = new Admin(vendingMachine);
 
                         Console.WriteLine("Please Choose an Option");
                         Console.WriteLine("1. Update Snack Price");
@@ -46,16 +49,19 @@ namespace SnackVendingMachine
                         switch (opt)
                         {
                             case 1:
-                                adminUser.DisplayMenu(new VendingMachine());
+                                adminUser.DisplayMenu();
 
                                 int item = Convert.ToInt32(Console.ReadLine());
+                                (new Admin(vendingMachine)).UpdateSnackPrice(item);
 
-                                
-
+                                adminUser.DisplayMenu();
                                 break;
                             case 2:
+                                (new Admin(vendingMachine)).IncreaseChangePool();
                                 break;
                             case 3:
+                                Console.WriteLine("Total Amount present in the Vending Machien is : £" + 
+                                    (new Admin(vendingMachine)).GetToalAmount());
                                 break;
                             default:
                                 break;
@@ -72,40 +78,6 @@ namespace SnackVendingMachine
                     break;
 
             }
-
-
-
-            //Console.WriteLine("Please Choose Your Role");
-            //Console.WriteLine("1. Admin");
-            //Console.WriteLine("2. Customer");
-
-            //int opt1 = Convert.ToInt32(Console.ReadLine());
-
-            //switch(opt1) {
-            //    case 1:
-            //        Console.WriteLine("Please enter your PIN");
-            //        string pin = Console.ReadLine();
-            //        Console.WriteLine("Please enter your Password");
-            //        string pass = Console.ReadLine();
-
-            //        if(pin == "1011" && pass == "A5144I")
-            //        {
-            //            User adminUser = new Admin();
-            //            adminUser.DisplayMenu(vendingMachine);
-            //        }
-            //        else
-            //        {
-            //            Console.WriteLine("Wrong Credentials. Please Check Again");
-            //            Console.WriteLine("Press any key to continue ... ");
-            //            Console.ReadKey();
-            //        }
-
-            //        break;
-            //    case 2:
-            //        break;
-            //    default:
-            //        break;
-            //}
         }
     }
 }
