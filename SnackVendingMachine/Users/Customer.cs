@@ -21,6 +21,8 @@ namespace SnackVendingMachine.Users
             List<Coin> changePool = VMObj.GetCoinList();
             List<Coin> insertedCoins = new List<Coin>();
             List<Coin> changeCoins = new List<Coin>();
+
+            decimal[] coinArray = { 2.0m, 1.0m, 0.5m, 0.2m, 0.1m, 0.05m };
             decimal sum = 0;
 
             if (snackList[item - 1].GetQuantity() <= 0)
@@ -39,8 +41,17 @@ namespace SnackVendingMachine.Users
                     Console.WriteLine("\nPlease Insert: £" + difference);
 
                     decimal newCoin = Convert.ToDecimal(Console.ReadLine());
-                    insertedCoins.AddRange(Enumerable.Repeat(new Coin(newCoin), 1));
-                    sum = insertedCoins.Sum(coin => coin.GetCoin());
+
+                    if(coinArray.Contains(newCoin))
+                    {
+                        insertedCoins.AddRange(Enumerable.Repeat(new Coin(newCoin), 1));
+                        sum = insertedCoins.Sum(coin => coin.GetCoin());
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please Enter a valid coin (£2, £1, £0.5, £0.2, £0.1, £0.05)");
+                    }
+
                 }
 
                 if (sum > (decimal)snackList[item - 1].GetPrice())
