@@ -1,24 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SnackVendingMachine.ChangePool
 {
     internal class FivePens : CoinProcessor
     {
-        public override void ProcessCoin(Coin coin)
+        List<Coin> resp;
+
+        public override List<Coin> ProcessCoin(VendingMachine VMObj, List<Coin> changeCoins, decimal toReturn)
         {
-            if (coin.GetCoin() == 0.05m)
+            List<Coin> coinPool = VMObj.GetCoinList();
+
+            if (toReturn >= 0.05m)
             {
-                Console.WriteLine("Five Pens Inserted");
-            }
-            else if (nextProcesser != null)
-            {
-                nextProcesser.ProcessCoin(coin);
+                if (coinPool.Find(coin => coin.GetCoin() == 0.05m) == null)
+                {
+                    resp = nextProcesser.ProcessCoin(VMObj, changeCoins, toReturn);
+                    return resp;
+                }
+                else
+                {
+                    if (toReturn == 0.05m)
+                    {
+                        Coin toRemove = coinPool.FirstOrDefault(coin => coin.GetCoin() == 0.05m);
+                        coinPool.Remove(toRemove);
+                        toReturn = toReturn - 0.05m;
+                        changeCoins.Add(toRemove);
+                        VMObj.SetCoinList(coinPool);
+
+                        return changeCoins;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
             }
             else
             {
-                Console.WriteLine("Invalid Coin");
+                return null;
             }
         }
     }

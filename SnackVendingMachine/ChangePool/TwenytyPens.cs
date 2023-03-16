@@ -1,24 +1,85 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SnackVendingMachine.ChangePool
 {
     internal class TwenytyPens : CoinProcessor
     {
-        public override void ProcessCoin(Coin coin)
+        List<Coin> resp;
+
+        public override List<Coin> ProcessCoin(VendingMachine VMObj, List<Coin> changeCoins, decimal toReturn)
         {
-            if (coin.GetCoin() == 0.20m)
+            List<Coin> coinPool = VMObj.GetCoinList();
+
+            if (toReturn >= 0.2m)
             {
-                Console.WriteLine("Twenty Pens Inserted");
-            }
-            else if (nextProcesser != null)
-            {
-                nextProcesser.ProcessCoin(coin);
+                if (coinPool.Find(coin => coin.GetCoin() == 0.20m) == null)
+                {
+                    resp = nextProcesser.ProcessCoin(VMObj, changeCoins, toReturn);
+                    return resp;
+                }
+                else
+                {
+                    if (toReturn == 0.20m)
+                    {
+                        Coin toRemove = coinPool.FirstOrDefault(coin => coin.GetCoin() == 0.20m);
+                        coinPool.Remove(toRemove);
+                        toReturn = toReturn - 0.20m;
+                        changeCoins.Add(toRemove);
+                        VMObj.SetCoinList(coinPool);
+
+                        return changeCoins;
+                    }
+                    else
+                    {
+                        while (toReturn > 0.20m)
+                        {
+                            while (toReturn > 0.20m)
+                            {
+                                if (coinPool.Find(coin => coin.GetCoin() == 0.20m) != null)
+                                {
+                                    Coin toRemove = coinPool.FirstOrDefault(coin => coin.GetCoin() == 0.20m);
+                                    coinPool.Remove(toRemove);
+                                    toReturn = toReturn - 0.20m;
+                                    changeCoins.Add(toRemove);
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+
+                            if (toReturn == 0)
+                            {
+                                VMObj.SetCoinList(coinPool);
+                                return changeCoins;
+                            }
+                            else
+                            {
+                                resp = nextProcesser.ProcessCoin(VMObj, changeCoins, toReturn);
+                                return resp;
+                            }
+                        }
+
+                        if (toReturn == 0)
+                        {
+                            VMObj.SetCoinList(coinPool);
+                            return changeCoins;
+                        }
+                        else
+                        {
+                            resp = nextProcesser.ProcessCoin(VMObj, changeCoins, toReturn);
+                            return resp;
+                        }
+                    }
+                }
             }
             else
             {
-                Console.WriteLine("Invalid Coin");
+                resp = nextProcesser.ProcessCoin(VMObj, changeCoins, toReturn);
+                return resp;
             }
         }
     }

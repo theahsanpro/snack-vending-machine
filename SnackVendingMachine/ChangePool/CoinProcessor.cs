@@ -13,6 +13,6 @@ namespace SnackVendingMachine.ChangePool
             this.nextProcesser = processor;
         }
 
-        public abstract void ProcessCoin(Coin coin);
+        public abstract List<Coin> ProcessCoin(VendingMachine VMObj, List<Coin> changeCoins, decimal toReturn);
     }
 }

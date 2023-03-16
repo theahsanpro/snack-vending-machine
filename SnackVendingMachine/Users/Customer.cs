@@ -16,44 +16,112 @@ namespace SnackVendingMachine.Users
         }
 
         public void MakePurchase(int item)
-        {           
-            List<Snack> snackList = VMObj.GetList(); 
+        {
+            List<Snack> snackList = VMObj.GetList();
             List<Coin> changePool = VMObj.GetCoinList();
             List<Coin> insertedCoins = new List<Coin>();
+            List<Coin> changeCoins = new List<Coin>();
             decimal sum = 0;
 
-            Console.WriteLine("NOTE :Please Insert Coins only) \n");
-
-            while (sum < (decimal)snackList[item - 1].GetPrice())
+            if (snackList[item - 1].GetQuantity() <= 0)
             {
-                decimal difference = (decimal)snackList[item - 1].GetPrice() - sum;
-                Console.WriteLine("Please Insert  £" + difference + "more");
-
-                decimal newCoin = Convert.ToDecimal(Console.ReadLine());
-                insertedCoins.AddRange(Enumerable.Repeat(new Coin(newCoin), 1));
-                sum = insertedCoins.Sum(coin => coin.GetCoin());
-            }
-
-            if (sum > (decimal)snackList[item - 1].GetPrice())
-            {
-                // Give back change and snack
-
+                Console.WriteLine("\nThis Item is out of stock. Please Select another Item.\n");
+                Console.WriteLine("\nPress any key to continue ...");
+                Console.ReadKey();
             }
             else
             {
-                // Give back just the snack
-                foreach (Coin coin in insertedCoins)
+                Console.WriteLine("\n(NOTE: Please Insert Coins only)");
+
+                while (sum < (decimal)snackList[item - 1].GetPrice())
                 {
-                    changePool.AddRange(Enumerable.Repeat(coin, 1));
+                    decimal difference = (decimal)snackList[item - 1].GetPrice() - sum;
+                    Console.WriteLine("\nPlease Insert: £" + difference);
+
+                    decimal newCoin = Convert.ToDecimal(Console.ReadLine());
+                    insertedCoins.AddRange(Enumerable.Repeat(new Coin(newCoin), 1));
+                    sum = insertedCoins.Sum(coin => coin.GetCoin());
                 }
 
-                VMObj.SetCoinList(changePool);
+                if (sum > (decimal)snackList[item - 1].GetPrice())
+                {
+                    // Give back change and snack
+                    CoinProcessor twoPound = new TwoPound();
+                    CoinProcessor onePound = new OnePound();
+                    CoinProcessor fiftyPens = new FiftyPens();
+                    CoinProcessor twentyPens = new TwenytyPens();
+                    CoinProcessor tenPens = new TenPens();
+                    CoinProcessor fivePens = new FivePens();
 
-                int newSnackQuantity = (int)snackList[item - 1].GetQuantity() - 1;
-                snackList[item-1].SetQuantity(newSnackQuantity);
+                    twoPound.SetNextCoin(onePound);
+                    onePound.SetNextCoin(fiftyPens);
+                    fiftyPens.SetNextCoin(twentyPens);
+                    twentyPens.SetNextCoin(tenPens);
+                    tenPens.SetNextCoin(fivePens);
+
+                    decimal changeToReturn = sum - (decimal)snackList[item - 1].GetPrice();
+
+                    List<Coin> response = twoPound.ProcessCoin(VMObj, changeCoins, changeToReturn);
+
+                    if (response == null)
+                    {
+                        Console.WriteLine("Transaction Declined due to Insufficient coins in the machine. \n");
+
+                        Console.WriteLine("Please Collect the Coins you Inserted: [ ");
+                        foreach (Coin coin in insertedCoins)
+                        {
+                            Console.Write(coin.GetCoin()+" ");
+                        }
+                        Console.Write("]");
+
+                        Console.WriteLine("\nPress any key to continue ...");
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        foreach (Coin coin in insertedCoins)
+                        {
+                            changePool.AddRange(Enumerable.Repeat(coin, 1));
+                        }
+
+                        // Lower snack quantity
+                        snackList[item - 1].SetQuantity(snackList[item - 1].GetQuantity() - 1);
+
+                        //Display result/ bakc change
+                        Console.Clear();
+                        Console.WriteLine("Please Collect Your Product: " + snackList[item - 1].GetName());
+                        Console.Write("\nPlease Collect the Change: [ ");
+                        foreach (Coin coin in response)
+                        {
+                            Console.Write(coin.GetCoin() + " ");
+                        }
+                        Console.Write("]");
+
+                        Console.WriteLine("\nPress any key to continue ...");
+                        Console.ReadKey();
+                    }
+                }
+                else
+                {
+                    // Give back just the snack
+                    foreach (Coin coin in insertedCoins)
+                    {
+                        changePool.AddRange(Enumerable.Repeat(coin, 1));
+                    }
+
+                    VMObj.SetCoinList(changePool);
+
+                    int newSnackQuantity = (int)snackList[item - 1].GetQuantity() - 1;
+                    snackList[item - 1].SetQuantity(newSnackQuantity);
+
+                    Console.Clear();
+                    Console.WriteLine("Please Collect Your Product: " + snackList[item - 1].GetName());
+
+                    Console.WriteLine("\nPress any key to continue ...");
+                    Console.ReadKey();
+                }
+
             }
-
-            DisplayMenu();
         }
 
         public override void DisplayMenu()
