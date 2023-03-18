@@ -4,8 +4,10 @@ using System.Text;
 
 namespace SnackVendingMachine.ChangePool
 {
+    // Thsis class will be used to represent a coin
     public class Coin
     {
+        // Value of the coin
         private decimal Value;
 
         public Coin(decimal val)
@@ -13,6 +15,7 @@ namespace SnackVendingMachine.ChangePool
             this.Value = val;
         }
 
+        // Get method to get the value of a coin
         public decimal GetCoin()
         {
             return Value;

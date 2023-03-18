@@ -11,6 +11,8 @@ namespace SnackVendingMachine.Users
 
         }
 
+        // Abstract method
+        // This method is overridden by the child class
         public abstract void DisplayMenu();
     }
 }

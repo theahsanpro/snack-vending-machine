@@ -8,39 +8,53 @@ namespace SnackVendingMachine.Users
 {
     internal class Admin : User
     {
+        // An object of Vending Machine
+        // Will be used to Get/Set Snack and Coin Pool List
         VendingMachine VMObj;
 
+        // Constructor
         public Admin(VendingMachine obj) 
         {
             VMObj = obj;
         }
 
+        // A Method to update the Snack Price
+        // Takes Item No. as a parameter
         public void UpdateSnackPrice(int itemNo)
         {
+            // Get the list of snacks
             List<Snack> snackLsit = VMObj.GetList();
 
+            // Prompting the user to enter a new price for the snack
             Console.WriteLine("Please enter the new price for the selected Item");
             double newPrice = Convert.ToInt32(Console.ReadLine());
 
+            // Set price of the snack
             snackLsit[itemNo-1].SetPrice(newPrice);
             VMObj.SetList(snackLsit);
         }
 
+        // A method to Increase the quantity of coins in the Change Pool
         public void IncreaseChangePool()
         {
+            // Get the Current Change Pool and display on the screen
             List<Coin> changePool = VMObj.GetCoinList();
             Console.WriteLine("Coins already Present in the Change Pool");
             DisplayChangePool(changePool);
 
+            // Prompting the user to choose a coin to increase its quantity
             Console.WriteLine("\nPlease specify the coin that you want to Increase");
             decimal coin = Convert.ToDecimal(Console.ReadLine());
 
+            // Prompting the user to add the quantity of the chosen coin
             Console.WriteLine("\nPlease specify the quantity you want to add");
             int coinQuantity = Convert.ToInt32(Console.ReadLine());
 
+            // Adding the coin to the change Pool
             changePool.AddRange(Enumerable.Repeat(new Coin(coin), coinQuantity));
             VMObj.SetCoinList(changePool);
 
+            // Display the updated change pool
             Console.WriteLine("\nCoins added Successfully. Updated Change Pool is: \n");
             DisplayChangePool(changePool);
 
@@ -48,6 +62,7 @@ namespace SnackVendingMachine.Users
             Console.ReadKey();
         }
 
+        // Method to Display the Change Pool
         public void DisplayChangePool(List<Coin> changePool)
         {
             Console.WriteLine("Coin  -- Quantity");
@@ -59,12 +74,16 @@ namespace SnackVendingMachine.Users
             Console.WriteLine("£0.05 -- " + changePool.Count(coin => coin.GetCoin() == 0.05m));
         }
 
+        // Method to return the Total amount of money present in the Vending Machine
         public decimal GetToalAmount()
         {
+            // Adding up the Value of all the coins
             List<Coin> changePool = VMObj.GetCoinList();
             return changePool.Sum(coin => coin.GetCoin());
         }
 
+        // Method to Display the Menu 
+        // This is an overriden method of the Parent Class
         public override void DisplayMenu()
         {
             List<Snack> snackLsit = VMObj.GetList();
