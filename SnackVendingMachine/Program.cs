@@ -15,7 +15,18 @@ namespace SnackVendingMachine
             Console.Clear();
             customer.DisplayMenu();
 
-            int option = Convert.ToInt32(Console.ReadLine());
+            var number = Console.ReadLine();
+
+            int option;
+            bool isNumber = int.TryParse(number, out option);
+
+            if(!isNumber)
+            {
+                Console.WriteLine("Please enter a valid option (From 1 to 5)");
+                Console.WriteLine("\nPress any key to continue ...");
+                Console.ReadKey();
+                goto startAgain;
+            }
 
             if (option > 0 && option < 7)
             {

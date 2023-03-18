@@ -40,16 +40,26 @@ namespace SnackVendingMachine.Users
                     decimal difference = (decimal)snackList[item - 1].GetPrice() - sum;
                     Console.WriteLine("\nPlease Insert: £" + difference);
 
-                    decimal newCoin = Convert.ToDecimal(Console.ReadLine());
+                    enterAgain:
 
-                    if(coinArray.Contains(newCoin))
+                    try
                     {
-                        insertedCoins.AddRange(Enumerable.Repeat(new Coin(newCoin), 1));
-                        sum = insertedCoins.Sum(coin => coin.GetCoin());
+                        decimal newCoin = Convert.ToDecimal(Console.ReadLine());
+
+                        if (coinArray.Contains(newCoin))
+                        {
+                            insertedCoins.AddRange(Enumerable.Repeat(new Coin(newCoin), 1));
+                            sum = insertedCoins.Sum(coin => coin.GetCoin());
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please Enter a valid coin (£2, £1, £0.5, £0.2, £0.1, £0.05)");
+                        }
                     }
-                    else
+                    catch
                     {
-                        Console.WriteLine("Please Enter a valid coin (£2, £1, £0.5, £0.2, £0.1, £0.05)");
+                        Console.WriteLine("Please Enter a Valid Coin");
+                        goto enterAgain;
                     }
 
                 }
