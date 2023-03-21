@@ -1,4 +1,5 @@
-﻿using SnackVendingMachine.ChangePool;
+﻿using Microsoft.VisualBasic.FileIO;
+using SnackVendingMachine.ChangePool;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +49,7 @@ namespace SnackVendingMachine.Users
             }
             else
             {
+                retry: 
                 //prompts the user to insert coins
                 Console.WriteLine("\n(NOTE: Please Insert Coins only)");
 
@@ -57,14 +59,35 @@ namespace SnackVendingMachine.Users
                     //find the difference between the two numbers , which is the number that the user has to give more to get the item
                     decimal difference = (decimal)snackList[item - 1].GetPrice() - sum;
                     //print that difference
-                    Console.WriteLine("\nPlease Insert: £" + difference);
+                    Console.WriteLine("\nPlease Insert: £" + difference + " or press 'C' to cancel the transaction");
+                    var number = Console.ReadLine();
+                    decimal newCoin;
 
-                    enterAgain:
+                    bool isNumber = decimal.TryParse(number, out newCoin);
+
+                    if (!isNumber)
+                    {
+                        //print this and start over
+                        if(number.ToLower() == "c")
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter a valid option (From 1 to 5)");
+                            Console.WriteLine("\nPress any key to continue ...");
+                            Console.ReadKey();
+                            goto retry;
+
+                        }
+                    }
+
+                enterAgain:
 
                     try
                     {
                         //if the number he insertes is the correct number
-                        decimal newCoin = Convert.ToDecimal(Console.ReadLine());
+                        newCoin = Convert.ToDecimal(Console.ReadLine());
                         //if correct number we adding this to the list
                         if (coinArray.Contains(newCoin))
                         {

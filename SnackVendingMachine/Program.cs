@@ -1,5 +1,6 @@
 ﻿using SnackVendingMachine.Users;
 using System;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 
 namespace SnackVendingMachine
@@ -60,7 +61,7 @@ namespace SnackVendingMachine
                     string pin = Console.ReadLine();
 
                     //if it goes to the menu accidently , has a back B key option that sends the user back to customer menu
-                    if (pin == "B")
+                    if (pin.ToUpper() == "B")
                     {
                         goto startAgain;
                     }
@@ -93,8 +94,29 @@ namespace SnackVendingMachine
                             {
                                 //case 1 update the snack price
                                 case 1:
+                                retry:
                                     adminUser.DisplayMenu();
-                                    int item = Convert.ToInt32(Console.ReadLine());
+                                    int item;
+
+                                    try
+                                    {
+                                        item = Convert.ToInt32(Console.ReadLine());
+                                        int[] options = { 1, 2, 3, 4, 5 };
+
+                                        if (!options.Contains(item))
+                                        {
+                                            Console.Clear();
+                                            Console.WriteLine("Please Enter a valid option\n\n");
+                                            goto retry;
+                                        }
+                                    }
+                                    catch
+                                    {
+                                        Console.Clear();
+                                        Console.WriteLine("Please Enter a valid option\n\n");
+                                        goto retry;
+                                    }
+
                                     (new Admin(vendingMachine)).UpdateSnackPrice(item);
                                     Console.Clear();
                                     Console.WriteLine("Updated Menu is : \n");
@@ -124,6 +146,10 @@ namespace SnackVendingMachine
                                 case 4:
                                     goto startAgain;
                                 default:
+                                    Console.WriteLine("Please Enter a valid option\n");
+                                    Console.Write("\nPlease press any key to continue ... ");
+                                    Console.ReadKey();
+                                    goto adminStart;
                                     break;
                             }
                         }

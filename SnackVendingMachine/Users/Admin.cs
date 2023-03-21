@@ -37,14 +37,34 @@ namespace SnackVendingMachine.Users
         // A method to Increase the quantity of coins in the Change Pool
         public void IncreaseChangePool()
         {
+        retry:
             // Get the Current Change Pool and display on the screen
             List<Coin> changePool = VMObj.GetCoinList();
             Console.WriteLine("Coins already Present in the Change Pool");
             DisplayChangePool(changePool);
 
             // Prompting the user to choose a coin to increase its quantity
-            Console.WriteLine("\nPlease specify the coin that you want to Increase");
-            decimal coin = Convert.ToDecimal(Console.ReadLine());
+            decimal[] coins = { 2.0m, 1.0m, 0.5m, 0.20m, 0.10m, 0.05m};
+            decimal coin;
+
+            try
+            {
+                Console.WriteLine("\nPlease specify the coin that you want to Increase");
+                coin = Convert.ToDecimal(Console.ReadLine());
+                
+                if(!coins.Contains(coin))
+                {
+                    Console.Clear();
+                    Console.WriteLine("Please Enter a valid option\n\n");
+                    goto retry;
+                }
+            }
+            catch
+            {
+                Console.Clear();
+                Console.WriteLine("Please Enter a valid option\n\n");
+                goto retry;
+            }
 
             // Prompting the user to add the quantity of the chosen coin
             Console.WriteLine("\nPlease specify the quantity you want to add");
