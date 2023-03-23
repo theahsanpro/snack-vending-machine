@@ -27,7 +27,7 @@ namespace SnackVendingMachine.Users
 
             // Prompting the user to enter a new price for the snack
             Console.WriteLine("Please enter the new price for the selected Item");
-            double newPrice = Convert.ToInt32(Console.ReadLine());
+            double newPrice = Convert.ToDouble(Console.ReadLine());
 
             // Set price of the snack
             snackLsit[itemNo-1].SetPrice(newPrice);
