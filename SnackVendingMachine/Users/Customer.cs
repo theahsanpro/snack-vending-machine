@@ -71,6 +71,17 @@ namespace SnackVendingMachine.Users
                         //print this and start over
                         if (number.ToLower() == "c")
                         {
+                            Console.Write("\nThe Transaaction has been declined. Please collect your change: [ ");
+
+                            foreach (Coin coin in insertedCoins)
+                            {
+                                Console.Write(coin.GetCoin() + " ");
+                            }
+                            Console.Write("]");
+
+                            Console.WriteLine("\nPress any key to continue ...");
+                            Console.ReadKey();
+
                             return;
                         }
                         else
