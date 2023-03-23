@@ -182,8 +182,9 @@ namespace SnackVendingMachine
             }
             else
             {
-                Console.Clear();
                 Console.WriteLine("Please Enter a Valid Option \n");
+                Console.WriteLine("Press any key to continue ... ");
+                Console.ReadKey();
                 goto startAgain;
             }
         }
