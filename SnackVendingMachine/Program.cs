@@ -87,7 +87,24 @@ namespace SnackVendingMachine
                             Console.WriteLine("3. Print Total Amount of money in the machine");
                             Console.WriteLine("4. Exit");
 
-                            int opt = Convert.ToInt32(Console.ReadLine());
+                            var num = Console.ReadLine();
+
+                            int opt;
+                            //converte it into true or false case
+                            bool isNum = int.TryParse(num, out opt);
+
+                            //if false , and the number is not a number or valid input
+
+                            if (!isNum)
+                            {
+                                //print this and start over
+                                Console.WriteLine("Please enter a valid option (From 1 to 4)");
+                                Console.WriteLine("\nPress any key to continue ...");
+                                Console.ReadKey();
+                                goto adminStart;
+                            }
+
+                            opt = Convert.ToInt32(num);
 
                             //switch case that takes option number
                             switch (opt)

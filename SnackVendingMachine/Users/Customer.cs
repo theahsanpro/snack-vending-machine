@@ -49,7 +49,7 @@ namespace SnackVendingMachine.Users
             }
             else
             {
-                retry: 
+            retry:
                 //prompts the user to insert coins
                 Console.WriteLine("\n(NOTE: Please Insert Coins only)");
 
@@ -60,6 +60,7 @@ namespace SnackVendingMachine.Users
                     decimal difference = (decimal)snackList[item - 1].GetPrice() - sum;
                     //print that difference
                     Console.WriteLine("\nPlease Insert: £" + difference + " or press 'C' to cancel the transaction");
+
                     var number = Console.ReadLine();
                     decimal newCoin;
 
@@ -68,7 +69,7 @@ namespace SnackVendingMachine.Users
                     if (!isNumber)
                     {
                         //print this and start over
-                        if(number.ToLower() == "c")
+                        if (number.ToLower() == "c")
                         {
                             return;
                         }
@@ -87,7 +88,7 @@ namespace SnackVendingMachine.Users
                     try
                     {
                         //if the number he insertes is the correct number
-                        newCoin = Convert.ToDecimal(Console.ReadLine());
+                        //newCoin = Convert.ToDecimal(Console.ReadLine());
                         //if correct number we adding this to the list
                         if (coinArray.Contains(newCoin))
                         {
@@ -112,7 +113,7 @@ namespace SnackVendingMachine.Users
                 //if the sum of the money the user is providing are more than the price of the item
                 if (sum > (decimal)snackList[item - 1].GetPrice())
                 {
-                    // Give back change and snack
+                    //Give back change and snack
                     CoinProcessor twoPound = new TwoPound();
                     CoinProcessor onePound = new OnePound();
                     CoinProcessor fiftyPens = new FiftyPens();
@@ -129,7 +130,7 @@ namespace SnackVendingMachine.Users
                     //find the difference and get the coins from the coin pool to return them back to the customer
                     decimal changeToReturn = sum - (decimal)snackList[item - 1].GetPrice();
 
-                    List<Coin> response = twoPound.ProcessCoin(VMObj, changeCoins, changeToReturn);
+                    List<Coin> response = twoPound.ProcessCoin(VMObj, changeCoins, changeToReturn, 2.0m);
 
                     //if there are not enough coins in the pool , cancel transaction , and provide back all the money
                     if (response == null)
@@ -139,7 +140,7 @@ namespace SnackVendingMachine.Users
                         Console.WriteLine("Please Collect the Coins you Inserted: [ ");
                         foreach (Coin coin in insertedCoins)
                         {
-                            Console.Write(coin.GetCoin()+" ");
+                            Console.Write(coin.GetCoin() + " ");
                         }
                         Console.Write("]");
 
