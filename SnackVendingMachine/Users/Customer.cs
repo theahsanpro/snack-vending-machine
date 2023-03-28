@@ -170,8 +170,8 @@ namespace SnackVendingMachine.Users
                         snackList[item - 1].SetQuantity(snackList[item - 1].GetQuantity() - 1);
 
                         //Display result/ bakc change
-                        Console.Clear();
-                        Console.WriteLine("Please Collect Your Product: " + snackList[item - 1].GetName());
+                        //Console.Clear();
+                        Console.WriteLine("\nPlease Collect Your Product: " + snackList[item - 1].GetName());
                         Console.Write("\nPlease Collect the Change: [ ");
                         foreach (Coin coin in response)
                         {
@@ -197,8 +197,8 @@ namespace SnackVendingMachine.Users
                     int newSnackQuantity = (int)snackList[item - 1].GetQuantity() - 1;
                     snackList[item - 1].SetQuantity(newSnackQuantity);
 
-                    Console.Clear();
-                    Console.WriteLine("Please Collect Your Product: " + snackList[item - 1].GetName());
+                    //Console.Clear();
+                    Console.WriteLine("\nPlease Collect Your Product: " + snackList[item - 1].GetName());
 
                     Console.WriteLine("\nPress any key to continue ...");
                     Console.ReadKey();

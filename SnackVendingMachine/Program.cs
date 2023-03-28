@@ -135,8 +135,8 @@ namespace SnackVendingMachine
                                     }
 
                                     (new Admin(vendingMachine)).UpdateSnackPrice(item);
-                                    Console.Clear();
-                                    Console.WriteLine("Updated Menu is : \n");
+                                    //Console.Clear();
+                                    Console.WriteLine("\nUpdated Menu is : \n");
                                     adminUser.DisplayMenu();
 
                                     Console.WriteLine(" \nPress any key to go back to Admin menu");

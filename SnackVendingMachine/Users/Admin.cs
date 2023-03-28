@@ -26,7 +26,7 @@ namespace SnackVendingMachine.Users
             List<Snack> snackLsit = VMObj.GetList();
 
             // Prompting the user to enter a new price for the snack
-            Console.WriteLine("Please enter the new price for the selected Item");
+            Console.WriteLine("\nPlease enter the new price for the selected Item");
             double newPrice = Convert.ToDouble(Console.ReadLine());
 
             // Set price of the snack
