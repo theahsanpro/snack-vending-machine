@@ -44,6 +44,11 @@ namespace SnackVendingMachine.ChangePool
                     }
                     else
                     {
+                        if(denominatior == 0.05m)
+                        {
+                            return null;
+                        }
+
                         while (toReturn > denominatior)
                         {
                             // if the £2 coin is present in the pool, 
@@ -78,6 +83,11 @@ namespace SnackVendingMachine.ChangePool
             // Move to the next linked coin
             else
             {
+                if (denominatior == 0.05m)
+                {
+                    return null;
+                }
+
                 resp = nextProcesser.ProcessCoin(VMObj, changeCoins, toReturn, denominatior);
                 return resp;
             }
