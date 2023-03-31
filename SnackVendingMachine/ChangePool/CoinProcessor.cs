@@ -19,10 +19,8 @@ namespace SnackVendingMachine.ChangePool
             List<Coin> coinPool = VMObj.GetCoinList();
             List<Coin> resp;
 
-            // If the value of the coin is greater or equal to 2, Proceed further
             if (toReturn >= denominatior)
             {
-                // See if the coin with value £2 is not in the list, go to the next linked coin
                 if (coinPool.Find(coin => coin.GetCoin() == denominatior) == null)
                 {
                     resp = nextProcesser.ProcessCoin(VMObj, changeCoins, toReturn, denominatior);
@@ -30,8 +28,6 @@ namespace SnackVendingMachine.ChangePool
                 }
                 else
                 {
-                    // If the value of the coin is equal to £2,
-                    // Remove the coin from coin pool, Add the coin to the temporary List, and decrease the amount of toReturn
                     if (toReturn == denominatior)
                     {
                         Coin toRemove = coinPool.FirstOrDefault(coin => coin.GetCoin() == denominatior);
@@ -51,8 +47,6 @@ namespace SnackVendingMachine.ChangePool
 
                         while (toReturn > denominatior)
                         {
-                            // if the £2 coin is present in the pool, 
-                            // Remove the coin from coin pool, Add the coin to the temporary List, and decrease the amount of toReturn
                             if (coinPool.Find(coin => coin.GetCoin() == denominatior) != null)
                             {
                                 Coin toRemove = coinPool.FirstOrDefault(coin => coin.GetCoin() == denominatior);
@@ -66,7 +60,6 @@ namespace SnackVendingMachine.ChangePool
                             }
                         }
 
-                        // if there is no amount to be retured, update the coin pool and return
                         if (toReturn == 0)
                         {
                             VMObj.SetCoinList(coinPool);
@@ -80,7 +73,6 @@ namespace SnackVendingMachine.ChangePool
                     }
                 }
             }
-            // Move to the next linked coin
             else
             {
                 if (denominatior == 0.05m)
